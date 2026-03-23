@@ -1,0 +1,21 @@
+{
+  "name": "registration-system",
+  "version": "1.0.0",
+  "description": "Registration Form",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Chandra-Shekhar-24/registration-system.git"
+  },
+  "keywords": [],
+  "author": "Chandra Shekhar Bansal",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/Chandra-Shekhar-24/registration-system/issues"
+  },
+  "homepage": "https://github.com/Chandra-Shekhar-24/registration-system#readme"
+}
