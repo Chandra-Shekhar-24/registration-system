@@ -1,0 +1,323 @@
+<!--
+DEVELOPER: Chandra Shekhar Bansal
+EMAIL: chandrashekharbansal.2006@gmail.com
+FILE VERSION: 1.0.0
+FILE DESCRIPTION: Login page for user authentication with email/password submission.
+-->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary: #667eea;
+            --primary-dark: #764ba2;
+            --text-primary: #2c3e50;
+            --text-secondary: #7f8c8d;
+            --border: #e8eef5;
+            --success: #27ae60;
+            --error: #e74c3c;
+        }
+
+        body {
+            font-family: 'Inter', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .form-container {
+            background: white;
+            padding: 50px;
+            border-radius: 15px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.15);
+            max-width: 480px;
+            width: 100%;
+            animation: slideUp 0.4s ease;
+        }
+
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        h1 {
+            color: var(--text-primary);
+            margin-bottom: 40px;
+            text-align: center;
+            font-size: 32px;
+            font-weight: 700;
+            letter-spacing: -0.5px;
+        }
+
+        form {
+            display: flex;
+            flex-direction: column;
+            gap: 0;
+        }
+
+        dl {
+            display: flex;
+            flex-direction: column;
+        }
+
+        dt {
+            color: var(--text-primary);
+            font-weight: 600;
+            margin-top: 25px;
+            margin-bottom: 10px;
+            font-size: 13px;
+            text-transform: capitalize;
+            letter-spacing: 0.3px;
+        }
+
+        dd {
+            margin-bottom: 0;
+            margin-left: 0;
+        }
+
+        input[type="email"],
+        input[type="password"] {
+            width: 100%;
+            padding: 13px 16px;
+            border: 2px solid var(--border);
+            border-radius: 8px;
+            font-size: 15px;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            font-family: inherit;
+            background-color: #f8f9fb;
+        }
+
+        input[type="email"]:hover,
+        input[type="password"]:hover {
+            background-color: white;
+            border-color: #d0d8e8;
+        }
+
+        input[type="email"]:focus,
+        input[type="password"]:focus {
+            outline: none;
+            border-color: var(--primary);
+            background-color: white;
+            box-shadow: 0 0 0 4px rgba(102, 126, 234, 0.12);
+        }
+
+        input::placeholder {
+            color: var(--text-secondary);
+            opacity: 0.7;
+        }
+
+        button {
+            width: 100%;
+            padding: 14px 24px;
+            margin-top: 30px;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            letter-spacing: 0.5px;
+            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.25);
+        }
+
+        button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(102, 126, 234, 0.35);
+        }
+
+        button:active {
+            transform: translateY(0);
+            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.25);
+        }
+
+        button:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .message {
+            margin-top: 20px;
+            padding: 12px;
+            border-radius: 8px;
+            font-size: 14px;
+            display: none;
+        }
+
+        .message.success {
+            background: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+
+        .message.error {
+            background: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+
+        .message.info {
+            background: #d1ecf1;
+            color: #0c5460;
+            border: 1px solid #bee5eb;
+        }
+
+        .links {
+            margin-top: 20px;
+            text-align: center;
+            font-size: 14px;
+        }
+
+        .links a {
+            color: var(--primary);
+            text-decoration: none;
+            margin: 0 10px;
+        }
+
+        .links a:hover {
+            text-decoration: underline;
+        }
+
+        @media (max-width: 768px) {
+            .form-container {
+                padding: 35px;
+            }
+            h1 {
+                font-size: 28px;
+                margin-bottom: 30px;
+            }
+            dt {
+                margin-top: 20px;
+                font-size: 12px;
+            }
+            button {
+                padding: 12px 20px;
+                font-size: 15px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .form-container {
+                padding: 25px;
+                border-radius: 12px;
+            }
+            h1 {
+                font-size: 24px;
+                margin-bottom: 25px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="form-container">
+        <h1>Login</h1>
+        <form id="loginForm">
+            <dl>
+                <dt>Email:</dt>
+                <dd><input type="email" id="email" placeholder="Enter your email" required></dd>
+
+                <dt>Password:</dt>
+                <dd><input type="password" id="password" placeholder="Enter your password" required></dd>
+            </dl>
+            <button type="submit" id="submitBtn">Login</button>
+        </form>
+        <div id="message" class="message"></div>
+        <div class="links">
+            <a href="/register.html">Don't have an account? Register</a>
+            <a href="/reset-password.html">Forgot Password?</a>
+        </div>
+    </div>
+
+    <script>
+        const API_BASE_URL = '/api/v1';
+
+        // Helper to show messages
+        function showMessage(text, type = 'error') {
+            const msgDiv = document.getElementById('message');
+            msgDiv.textContent = text;
+            msgDiv.className = `message ${type}`;
+            msgDiv.style.display = 'block';
+            setTimeout(() => {
+                msgDiv.style.display = 'none';
+            }, 5000);
+        }
+
+        // Helper to store authentication token
+        function setAuthToken(token) {
+            localStorage.setItem('auth_token', token);
+        }
+
+        // Handle login form submission
+        async function handleLogin(event) {
+            event.preventDefault();
+
+            const email = document.getElementById('email').value.trim();
+            const password = document.getElementById('password').value;
+
+            if (!email || !password) {
+                showMessage('Please enter email and password', 'error');
+                return;
+            }
+
+            const submitBtn = document.getElementById('submitBtn');
+            submitBtn.disabled = true;
+            submitBtn.textContent = 'Logging in...';
+
+            try {
+                const response = await fetch(`${API_BASE_URL}/auth/login`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ email, password })
+                });
+
+                const data = await response.json();
+
+                if (!response.ok) {
+                    throw new Error(data.error?.message || 'Login failed');
+                }
+
+                // Store token and user info
+                setAuthToken(data.token);
+                localStorage.setItem('user', JSON.stringify(data.user));
+
+                showMessage('Login successful! Redirecting...', 'success');
+                setTimeout(() => {
+                    window.location.href = '/dashboard.html';
+                }, 1500);
+            } catch (err) {
+                showMessage(err.message, 'error');
+                submitBtn.disabled = false;
+                submitBtn.textContent = 'Login';
+            }
+        }
+
+        // Attach event listener
+        document.getElementById('loginForm').addEventListener('submit', handleLogin);
+
+        // If already logged in, redirect to dashboard
+        if (localStorage.getItem('auth_token')) {
+            window.location.href = '/dashboard.html';
+        }
+    </script>
+</body>
+</html>
