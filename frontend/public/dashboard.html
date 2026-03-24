@@ -1,0 +1,492 @@
+<!--
+DEVELOPER: Chandra Shekhar Bansal
+EMAIL: chandrashekharbansal.2006@gmail.com
+FILE VERSION: 1.0.0
+FILE DESCRIPTION: User dashboard after login; displays profile info and allows logout.
+-->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary: #667eea;
+            --primary-dark: #764ba2;
+            --text-primary: #2c3e50;
+            --text-secondary: #7f8c8d;
+            --border: #e8eef5;
+            --success: #27ae60;
+            --error: #e74c3c;
+        }
+
+        body {
+            font-family: 'Inter', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .dashboard-container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.15);
+            overflow: hidden;
+            animation: slideUp 0.4s ease;
+        }
+
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .header {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+            color: white;
+            padding: 30px;
+            text-align: center;
+        }
+
+        .header h1 {
+            font-size: 28px;
+            margin-bottom: 10px;
+        }
+
+        .header p {
+            opacity: 0.9;
+        }
+
+        .content {
+            padding: 30px;
+        }
+
+        .profile-section {
+            margin-bottom: 30px;
+            border-bottom: 1px solid var(--border);
+            padding-bottom: 20px;
+        }
+
+        .profile-section h2 {
+            color: var(--text-primary);
+            margin-bottom: 20px;
+            font-size: 20px;
+        }
+
+        .profile-card {
+            background: #f8f9fb;
+            border-radius: 12px;
+            padding: 20px;
+        }
+
+        .profile-row {
+            display: flex;
+            margin-bottom: 15px;
+            padding: 8px 0;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .profile-label {
+            font-weight: 600;
+            width: 120px;
+            color: var(--text-secondary);
+        }
+
+        .profile-value {
+            flex: 1;
+            color: var(--text-primary);
+        }
+
+        .button-group {
+            display: flex;
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        button {
+            padding: 12px 24px;
+            border: none;
+            border-radius: 8px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .btn-logout {
+            background: #e74c3c;
+            color: white;
+        }
+
+        .btn-logout:hover {
+            background: #c0392b;
+            transform: translateY(-2px);
+        }
+
+        .btn-change-password {
+            background: var(--primary);
+            color: white;
+        }
+
+        .btn-change-password:hover {
+            background: var(--primary-dark);
+            transform: translateY(-2px);
+        }
+
+        .btn-sessions {
+            background: #3498db;
+            color: white;
+        }
+
+        .btn-sessions:hover {
+            background: #2980b9;
+            transform: translateY(-2px);
+        }
+
+        .message {
+            margin-top: 20px;
+            padding: 12px;
+            border-radius: 8px;
+            font-size: 14px;
+            display: none;
+        }
+
+        .message.success {
+            background: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+
+        .message.error {
+            background: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+
+        .sessions-section {
+            margin-top: 30px;
+        }
+
+        .sessions-section h2 {
+            color: var(--text-primary);
+            margin-bottom: 15px;
+            font-size: 18px;
+        }
+
+        .session-list {
+            background: #f8f9fb;
+            border-radius: 12px;
+            padding: 15px;
+        }
+
+        .session-item {
+            padding: 12px;
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .session-item:last-child {
+            border-bottom: none;
+        }
+
+        .session-info {
+            font-size: 14px;
+        }
+
+        .session-device {
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+
+        .session-ip {
+            color: var(--text-secondary);
+            font-size: 12px;
+            margin-top: 4px;
+        }
+
+        .session-actions {
+            display: flex;
+            gap: 10px;
+        }
+
+        .revoke-btn {
+            background: #95a5a6;
+            color: white;
+            padding: 6px 12px;
+            font-size: 12px;
+        }
+
+        .revoke-btn:hover {
+            background: #7f8c8d;
+        }
+
+        .current-badge {
+            background: var(--success);
+            color: white;
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-size: 11px;
+            font-weight: 600;
+        }
+
+        @media (max-width: 768px) {
+            .profile-row {
+                flex-direction: column;
+            }
+            .profile-label {
+                width: auto;
+                margin-bottom: 5px;
+            }
+            .button-group {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="dashboard-container">
+        <div class="header">
+            <h1>User Dashboard</h1>
+            <p>Welcome to your account</p>
+        </div>
+        <div class="content">
+            <div class="profile-section">
+                <h2>Profile Information</h2>
+                <div class="profile-card" id="profileCard">
+                    <div class="profile-row">
+                        <div class="profile-label">Name:</div>
+                        <div class="profile-value" id="profileName">-</div>
+                    </div>
+                    <div class="profile-row">
+                        <div class="profile-label">Email:</div>
+                        <div class="profile-value" id="profileEmail">-</div>
+                    </div>
+                    <div class="profile-row">
+                        <div class="profile-label">Username:</div>
+                        <div class="profile-value" id="profileUsername">-</div>
+                    </div>
+                    <div class="profile-row">
+                        <div class="profile-label">Mobile:</div>
+                        <div class="profile-value" id="profileMobile">-</div>
+                    </div>
+                    <div class="profile-row">
+                        <div class="profile-label">Age:</div>
+                        <div class="profile-value" id="profileAge">-</div>
+                    </div>
+                    <div class="profile-row">
+                        <div class="profile-label">Gender:</div>
+                        <div class="profile-value" id="profileGender">-</div>
+                    </div>
+                    <div class="profile-row">
+                        <div class="profile-label">Member Since:</div>
+                        <div class="profile-value" id="profileCreated">-</div>
+                    </div>
+                </div>
+                <div class="button-group">
+                    <button class="btn-change-password" id="changePasswordBtn">Change Password</button>
+                    <button class="btn-sessions" id="viewSessionsBtn">View Active Sessions</button>
+                    <button class="btn-logout" id="logoutBtn">Logout</button>
+                </div>
+            </div>
+
+            <div id="sessionsContainer" style="display: none;" class="sessions-section">
+                <h2>Active Sessions</h2>
+                <div class="session-list" id="sessionList"></div>
+            </div>
+
+            <div id="message" class="message"></div>
+        </div>
+    </div>
+
+    <script>
+        const API_BASE_URL = '/api/v1';
+
+        function getAuthToken() {
+            return localStorage.getItem('auth_token');
+        }
+
+        function setAuthToken(token) {
+            if (token) localStorage.setItem('auth_token', token);
+            else localStorage.removeItem('auth_token');
+        }
+
+        function getUser() {
+            const userStr = localStorage.getItem('user');
+            return userStr ? JSON.parse(userStr) : null;
+        }
+
+        function showMessage(text, type = 'error') {
+            const msgDiv = document.getElementById('message');
+            msgDiv.textContent = text;
+            msgDiv.className = `message ${type}`;
+            msgDiv.style.display = 'block';
+            setTimeout(() => {
+                msgDiv.style.display = 'none';
+            }, 5000);
+        }
+
+        async function fetchWithAuth(url, options = {}) {
+            const token = getAuthToken();
+            if (!token) throw new Error('No authentication token');
+
+            const headers = {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${token}`,
+                ...options.headers
+            };
+            const response = await fetch(url, { ...options, headers });
+            if (response.status === 401) {
+                // Token expired or invalid
+                setAuthToken(null);
+                localStorage.removeItem('user');
+                window.location.href = '/login.html';
+                throw new Error('Session expired');
+            }
+            return response;
+        }
+
+        async function loadProfile() {
+            try {
+                const response = await fetchWithAuth(`${API_BASE_URL}/users/me`);
+                if (!response.ok) {
+                    throw new Error('Failed to load profile');
+                }
+                const user = await response.json();
+                document.getElementById('profileName').textContent = user.name || '-';
+                document.getElementById('profileEmail').textContent = user.email || '-';
+                document.getElementById('profileUsername').textContent = user.username || '-';
+                document.getElementById('profileMobile').textContent = user.mobile_number || '-';
+                document.getElementById('profileAge').textContent = user.age || '-';
+                document.getElementById('profileGender').textContent = user.gender || '-';
+                document.getElementById('profileCreated').textContent = user.created_at ? new Date(user.created_at).toLocaleDateString() : '-';
+                // Update stored user
+                localStorage.setItem('user', JSON.stringify(user));
+            } catch (err) {
+                console.error(err);
+                showMessage('Could not load profile', 'error');
+            }
+        }
+
+        async function loadSessions() {
+            try {
+                const response = await fetchWithAuth(`${API_BASE_URL}/auth/sessions`);
+                if (!response.ok) throw new Error('Failed to load sessions');
+                const data = await response.json();
+                const sessionList = document.getElementById('sessionList');
+                sessionList.innerHTML = '';
+                const currentToken = getAuthToken();
+                for (const session of data.sessions) {
+                    const div = document.createElement('div');
+                    div.className = 'session-item';
+                    const isCurrent = session.token === currentToken;
+                    const deviceInfo = session.device_info || {};
+                    div.innerHTML = `
+                        <div class="session-info">
+                            <div class="session-device">${deviceInfo.userAgent || 'Unknown device'}</div>
+                            <div class="session-ip">IP: ${session.ip_address || 'Unknown'}</div>
+                            <div class="session-ip">Created: ${new Date(session.created_at).toLocaleString()}</div>
+                            ${session.last_activity ? `<div class="session-ip">Last active: ${new Date(session.last_activity).toLocaleString()}</div>` : ''}
+                        </div>
+                        <div class="session-actions">
+                            ${isCurrent ? '<span class="current-badge">Current</span>' : `<button class="revoke-btn" data-id="${session.id}">Revoke</button>`}
+                        </div>
+                    `;
+                    sessionList.appendChild(div);
+                }
+                // Attach revoke event listeners
+                document.querySelectorAll('.revoke-btn').forEach(btn => {
+                    btn.addEventListener('click', async (e) => {
+                        const sessionId = btn.dataset.id;
+                        await revokeSession(sessionId);
+                    });
+                });
+                document.getElementById('sessionsContainer').style.display = 'block';
+            } catch (err) {
+                console.error(err);
+                showMessage('Could not load sessions', 'error');
+            }
+        }
+
+        async function revokeSession(sessionId) {
+            try {
+                const response = await fetchWithAuth(`${API_BASE_URL}/auth/sessions/${sessionId}`, {
+                    method: 'DELETE'
+                });
+                if (!response.ok) throw new Error('Failed to revoke session');
+                showMessage('Session revoked', 'success');
+                // Reload sessions list
+                await loadSessions();
+            } catch (err) {
+                showMessage(err.message, 'error');
+            }
+        }
+
+        async function logout() {
+            try {
+                const token = getAuthToken();
+                if (token) {
+                    await fetchWithAuth(`${API_BASE_URL}/auth/logout`, { method: 'POST' }).catch(() => {});
+                }
+            } finally {
+                setAuthToken(null);
+                localStorage.removeItem('user');
+                window.location.href = '/login.html';
+            }
+        }
+
+        function changePassword() {
+            const newPassword = prompt('Enter new password (min 8 chars, at least one uppercase, one lowercase, one number):');
+            if (!newPassword) return;
+            if (!/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{8,}$/.test(newPassword)) {
+                showMessage('Password does not meet requirements', 'error');
+                return;
+            }
+            const currentPassword = prompt('Enter current password:');
+            if (!currentPassword) return;
+
+            (async () => {
+                try {
+                    const response = await fetchWithAuth(`${API_BASE_URL}/users/me/change-password`, {
+                        method: 'POST',
+                        body: JSON.stringify({ current_password: currentPassword, new_password: newPassword })
+                    });
+                    if (!response.ok) {
+                        const errData = await response.json();
+                        throw new Error(errData.error?.message || 'Failed to change password');
+                    }
+                    showMessage('Password changed successfully', 'success');
+                } catch (err) {
+                    showMessage(err.message, 'error');
+                }
+            })();
+        }
+
+        // Check authentication on page load
+        if (!getAuthToken()) {
+            window.location.href = '/login.html';
+        } else {
+            loadProfile();
+        }
+
+        document.getElementById('logoutBtn').addEventListener('click', logout);
+        document.getElementById('changePasswordBtn').addEventListener('click', changePassword);
+        document.getElementById('viewSessionsBtn').addEventListener('click', loadSessions);
+    </script>
+</body>
+</html>
