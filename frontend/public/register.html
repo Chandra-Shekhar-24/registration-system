@@ -1,0 +1,427 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Registration Form</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary: #667eea;
+            --primary-dark: #764ba2;
+            --text-primary: #2c3e50;
+            --text-secondary: #7f8c8d;
+            --border: #e8eef5;
+            --success: #27ae60;
+            --error: #e74c3c;
+        }
+
+        body {
+            font-family: 'Inter', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .form-container {
+            background: white;
+            padding: 50px;
+            border-radius: 15px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.15);
+            max-width: 520px;
+            width: 100%;
+            animation: slideUp 0.4s ease;
+        }
+
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        h1 {
+            color: var(--text-primary);
+            margin-bottom: 40px;
+            text-align: center;
+            font-size: 32px;
+            font-weight: 700;
+            letter-spacing: -0.5px;
+        }
+
+        form {
+            display: flex;
+            flex-direction: column;
+            gap: 0;
+        }
+
+        dl {
+            display: flex;
+            flex-direction: column;
+        }
+
+        dt {
+            color: var(--text-primary);
+            font-weight: 600;
+            margin-top: 25px;
+            margin-bottom: 10px;
+            font-size: 13px;
+            text-transform: capitalize;
+            letter-spacing: 0.3px;
+        }
+
+        dd {
+            margin-bottom: 0;
+            margin-left: 0;
+        }
+
+        input[type="text"],
+        input[type="email"],
+        input[type="password"],
+        input[type="number"],
+        input[type="tel"] {
+            width: 100%;
+            padding: 13px 16px;
+            border: 2px solid var(--border);
+            border-radius: 8px;
+            font-size: 15px;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            font-family: inherit;
+            background-color: #f8f9fb;
+        }
+
+        input[type="text"]:hover,
+        input[type="email"]:hover,
+        input[type="password"]:hover,
+        input[type="number"]:hover,
+        input[type="tel"]:hover {
+            background-color: white;
+            border-color: #d0d8e8;
+        }
+
+        input[type="text"]:focus,
+        input[type="email"]:focus,
+        input[type="password"]:focus,
+        input[type="number"]:focus,
+        input[type="tel"]:focus {
+            outline: none;
+            border-color: var(--primary);
+            background-color: white;
+            box-shadow: 0 0 0 4px rgba(102, 126, 234, 0.12);
+        }
+
+        input::placeholder {
+            color: var(--text-secondary);
+            opacity: 0.7;
+        }
+
+        input[type="radio"] {
+            margin-right: 10px;
+            cursor: pointer;
+            accent-color: var(--primary);
+            width: 18px;
+            height: 18px;
+        }
+
+        input[type="radio"]:hover {
+            accent-color: var(--primary-dark);
+        }
+
+        dd:has(input[type="radio"]) {
+            display: inline-flex;
+            align-items: center;
+            margin-right: 20px;
+            margin-bottom: 12px;
+            cursor: pointer;
+            font-size: 14px;
+            color: var(--text-secondary);
+        }
+
+        button {
+            width: 100%;
+            padding: 14px 24px;
+            margin-top: 30px;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            letter-spacing: 0.5px;
+            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.25);
+        }
+
+        button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(102, 126, 234, 0.35);
+        }
+
+        button:active {
+            transform: translateY(0);
+            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.25);
+        }
+
+        button:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .message {
+            margin-top: 20px;
+            padding: 12px;
+            border-radius: 8px;
+            font-size: 14px;
+            display: none;
+        }
+
+        .message.success {
+            background: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+
+        .message.error {
+            background: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+
+        .message.info {
+            background: #d1ecf1;
+            color: #0c5460;
+            border: 1px solid #bee5eb;
+        }
+
+        .otp-section {
+            display: none;
+        }
+
+        .otp-section.active {
+            display: block;
+        }
+
+        @media (max-width: 768px) {
+            .form-container {
+                padding: 35px;
+            }
+            h1 {
+                font-size: 28px;
+                margin-bottom: 30px;
+            }
+            dt {
+                margin-top: 20px;
+                font-size: 12px;
+            }
+            button {
+                padding: 12px 20px;
+                font-size: 15px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .form-container {
+                padding: 25px;
+                border-radius: 12px;
+            }
+            h1 {
+                font-size: 24px;
+                margin-bottom: 25px;
+            }
+            dd:has(input[type="radio"]) {
+                margin-right: 12px;
+                font-size: 13px;
+            }
+            input[type="radio"] {
+                width: 16px;
+                height: 16px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="form-container">
+        <h1>Registration Form</h1>
+        <form id="registrationForm">
+            <dl>
+                <dt>name:</dt>
+                <dd><input type="text" id="name" placeholder="Enter your name" required></dd>
+
+                <dt>age:</dt>
+                <dd><input type="number" id="age" value="20" min="18" max="120" required></dd>
+
+                <dt>gender:</dt>
+                <dd><input type="radio" name="gender" value="Male">Male</dd>
+                <dd><input type="radio" name="gender" value="Female">Female</dd>
+                <dd><input type="radio" name="gender" value="Other">Other</dd>
+                <dd><input type="radio" name="gender" value="Prefer not to say">Prefer not say</dd>
+
+                <dt>Mobile Number:</dt>
+                <dd><input type="tel" id="mobile" pattern="[0-9]{10,15}" placeholder="10-15 digits" required></dd>
+
+                <dt>Email:</dt>
+                <dd><input type="email" id="email" required></dd>
+
+                <dt>Password:</dt>
+                <dd><input type="password" id="password" placeholder="Min 8 chars, at least one uppercase, one lowercase, one number" required></dd>
+            </dl>
+
+            <div class="otp-section" id="otpSection">
+                <dt>Enter OTP sent to your email:</dt>
+                <dd><input type="text" id="otp" inputmode="numeric" pattern="\d*" maxlength="6" placeholder="6-digit OTP"></dd>
+                <button type="button" id="verifyOtpBtn">Verify OTP</button>
+            </div>
+
+            <button type="submit" id="submitBtn">Register</button>
+        </form>
+        <div id="message" class="message"></div>
+    </div>
+
+    <script>
+        const API_BASE_URL = '/api/v1';
+        let pendingEmail = null;
+
+        // Helper to show messages
+        function showMessage(text, type = 'error') {
+            const msgDiv = document.getElementById('message');
+            msgDiv.textContent = text;
+            msgDiv.className = `message ${type}`;
+            msgDiv.style.display = 'block';
+            setTimeout(() => {
+                msgDiv.style.display = 'none';
+            }, 5000);
+        }
+
+        // Helper to get selected gender
+        function getSelectedGender() {
+            const radios = document.querySelectorAll('input[name="gender"]');
+            for (let radio of radios) {
+                if (radio.checked) return radio.value;
+            }
+            return null;
+        }
+
+        // Step 1: Request OTP
+        async function requestOtp(event) {
+            event.preventDefault();
+
+            const name = document.getElementById('name').value.trim();
+            const age = parseInt(document.getElementById('age').value, 10);
+            const mobile = document.getElementById('mobile').value.trim();
+            const email = document.getElementById('email').value.trim();
+            const password = document.getElementById('password').value;
+            const gender = getSelectedGender();
+
+            // Basic validation
+            if (!name || !age || !mobile || !email || !password || !gender) {
+                showMessage('Please fill all fields', 'error');
+                return;
+            }
+
+            if (age < 18 || age > 120) {
+                showMessage('Age must be between 18 and 120', 'error');
+                return;
+            }
+
+            if (!/^\d{10,15}$/.test(mobile)) {
+                showMessage('Mobile number must be 10-15 digits', 'error');
+                return;
+            }
+
+            if (!/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{8,}$/.test(password)) {
+                showMessage('Password must be at least 8 characters with one uppercase, one lowercase, and one number', 'error');
+                return;
+            }
+
+            const submitBtn = document.getElementById('submitBtn');
+            submitBtn.disabled = true;
+            submitBtn.textContent = 'Sending OTP...';
+
+            try {
+                const response = await fetch(`${API_BASE_URL}/auth/register/request-otp`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ name, email, mobile, age, gender, password })
+                });
+
+                const data = await response.json();
+
+                if (!response.ok) {
+                    throw new Error(data.error?.message || 'Failed to send OTP');
+                }
+
+                pendingEmail = email;
+                showMessage('OTP sent to your email. Please enter it below.', 'success');
+                document.getElementById('otpSection').classList.add('active');
+                // Keep submit button disabled and change its text, but don't allow resubmit without refresh
+                submitBtn.disabled = true;
+                submitBtn.textContent = 'OTP Sent';
+                document.getElementById('verifyOtpBtn').disabled = false;
+            } catch (err) {
+                showMessage(err.message, 'error');
+                submitBtn.disabled = false;
+                submitBtn.textContent = 'Register';
+            }
+        }
+
+        // Step 2: Verify OTP and complete registration
+        async function verifyOtp() {
+            const otp = document.getElementById('otp').value.trim();
+            if (!otp || !/^\d{6}$/.test(otp)) {
+                showMessage('Please enter a valid 6-digit OTP', 'error');
+                return;
+            }
+
+            if (!pendingEmail) {
+                showMessage('Please request OTP first', 'error');
+                return;
+            }
+
+            const verifyBtn = document.getElementById('verifyOtpBtn');
+            verifyBtn.disabled = true;
+            verifyBtn.textContent = 'Verifying...';
+
+            try {
+                const response = await fetch(`${API_BASE_URL}/auth/register/verify-otp`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ email: pendingEmail, otp_code: otp })
+                });
+
+                const data = await response.json();
+
+                if (!response.ok) {
+                    throw new Error(data.error?.message || 'OTP verification failed');
+                }
+
+                showMessage('Registration successful! Redirecting to login...', 'success');
+                setTimeout(() => {
+                    window.location.href = '/login.html';
+                }, 2000);
+            } catch (err) {
+                showMessage(err.message, 'error');
+                verifyBtn.disabled = false;
+                verifyBtn.textContent = 'Verify OTP';
+            }
+        }
+
+        // Attach event listeners
+        document.getElementById('registrationForm').addEventListener('submit', requestOtp);
+        document.getElementById('verifyOtpBtn').addEventListener('click', verifyOtp);
+    </script>
+</body>
+</html>
