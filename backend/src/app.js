@@ -1,8 +1,8 @@
 /*
 DEVELOPER: Chandra Shekhar Bansal
 EMAIL: chandrashekharbansal.2006@gmail.com
-FILE VERSION: 1.0.0
-FILE DESCRIPTION: Express application initialization, middleware configuration, and route registration.
+FILE VERSION: 1.1.0
+FILE DESCRIPTION: Express application initialization, middleware configuration, and route registration (includes admin routes).
 */
 
 const express = require('express');
@@ -11,6 +11,7 @@ const helmet = require('helmet');
 const morgan = require('morgan');
 const authRoutes = require('./routes/authRoutes');
 const userRoutes = require('./routes/userRoutes');
+const adminRoutes = require('./routes/adminRoutes');
 const auditMiddleware = require('./middleware/auditMiddleware');
 const config = require('./config/env');
 
@@ -49,6 +50,7 @@ app.get('/health', (req, res) => {
 // API routes
 app.use('/api/v1', authRoutes);
 app.use('/api/v1', userRoutes);
+app.use('/api/v1', adminRoutes);
 
 // 404 handler for undefined routes
 app.use((req, res) => {
